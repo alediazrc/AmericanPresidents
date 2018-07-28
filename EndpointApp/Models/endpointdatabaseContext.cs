@@ -17,17 +17,11 @@ namespace EndpointApp.Models
 
         public virtual DbSet<Presidents> Presidents { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Presidents>(entity =>
             {
-                entity.HasKey(e => e.President);
-
-                entity.Property(e => e.President)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
-
                 entity.Property(e => e.Birthday)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -43,6 +37,10 @@ namespace EndpointApp.Models
 
                 entity.Property(e => e.DeathPlace)
                     .HasColumnName("Death place")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.President)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
