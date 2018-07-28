@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EndpointApp.Repositories
 {
-    public class PresidentsRepository: GenericReposity<Presidents>
+    public class PresidentsRepository: GenericReposity<CustomPresident>
     {
         public PresidentsRepository(endpointdatabaseContext context) : base (context)
         {
