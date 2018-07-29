@@ -45,15 +45,38 @@ namespace EndpointApp.Controllers
                 _presidentsList = _repository.context.Presidents.OrderBy(deseced => deseced.DeathDay).ToList();
                 foreach (Presidents _item in _presidentsList)
                 {
-                    _president.Birthday = _item.Birthday;
-                    _president.Birthplace = _item.Birthplace;
-                    _president.DeathDay = _item.DeathDay;
-                    _president.DeathPlace = _item.DeathPlace;
-                    _president.President = _item.President;
-                    _president.Id = _item.Id;
-                    _president.ShortBirthDate = _item.Birthday.ToShortDateString();
-                    _president.ShortDiedDate = _item.DeathDay.ToShortDateString();
-                    _customPresidents.Add(_president);
+                    if (_item.DeathPlace != "" && _item.DeathPlace!=null)
+                    {
+                        _customPresidents.Add(new CustomPresident()
+                        {
+
+
+                            Birthday = _item.Birthday,
+                            Birthplace = _item.Birthplace,
+                            DeathDay = _item.DeathDay,
+                            DeathPlace = _item.DeathPlace,
+                            President = _item.President,
+                            Id = _item.Id,
+                            ShortBirthDate = _item.Birthday.ToString("MM/dd/yyyy"),
+                            ShortDiedDate = _item.DeathDay.ToString("MM/dd/yyyy")
+
+                        });
+                    }
+                    else
+                    {
+                        _customPresidents.Add(new CustomPresident()
+                        {
+                            Birthday = _item.Birthday,
+                            Birthplace = _item.Birthplace,
+                            President = _item.President,
+                            DeathDay = null,
+                            DeathPlace = null,
+                            Id = _item.Id,
+                            ShortBirthDate = _item.Birthday.ToString("MM/dd/yyyy"),
+                            ShortDiedDate = null
+                        });
+                    }
+                    
                 }
                 return Ok(_customPresidents);
             }
@@ -72,25 +95,28 @@ namespace EndpointApp.Controllers
             CustomPresident _president = new CustomPresident();
             try
             {
-                _presidentsList = _repository.context.Presidents.OrderBy(deseced => deseced.Birthday).ToList();
+                _presidentsList = _repository.context.Presidents.OrderBy(birth => birth.Birthday).ToList();
                 foreach (Presidents _item in _presidentsList)
                 {
-                    _president.Birthday = _item.Birthday;
-                    _president.Birthplace = _item.Birthplace;
-                    _president.DeathDay = _item.DeathDay;
-                    _president.DeathPlace = _item.DeathPlace;
-                    _president.President = _item.President;
-                    _president.Id = _item.Id;
-                    _president.ShortBirthDate = _item.Birthday.ToShortDateString();
-                    _president.ShortDiedDate = _item.DeathDay.ToShortDateString();
-                    _customPresidents.Add(_president);
+                    _customPresidents.Add(new CustomPresident()
+                    {
+                        Birthday = _item.Birthday,
+                        Birthplace = _item.Birthplace,
+                        DeathDay = _item.DeathDay,
+                        DeathPlace = _item.DeathPlace,
+                        President = _item.President,
+                        Id = _item.Id,
+                        ShortBirthDate = _item.Birthday.ToString("MM/dd/yyyy"),
+                        ShortDiedDate = _item.DeathDay.ToString("MM/dd/yyyy")
+                    });
                 }
-                return Ok(_customPresidents);
+                    return Ok(_customPresidents);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
+
 
         }
 
@@ -101,23 +127,24 @@ namespace EndpointApp.Controllers
             List<Presidents> _presidentsList = new List<Presidents>();
             List<CustomPresident> _customPresidents = new List<CustomPresident>();
             CustomPresident _president = new CustomPresident();
-
             try
             {
                 _presidentsList = _repository.context.Presidents.OrderByDescending(deseced => deseced.DeathDay).ToList();
                 foreach (Presidents _item in _presidentsList)
                 {
-                    _president.Birthday = _item.Birthday;
-                    _president.Birthplace = _item.Birthplace;
-                    _president.DeathDay = _item.DeathDay;
-                    _president.DeathPlace = _item.DeathPlace;
-                    _president.President = _item.President;
-                    _president.Id = _item.Id;
-                    _president.ShortBirthDate = _item.Birthday.ToShortDateString();
-                    _president.ShortDiedDate = _item.DeathDay.ToShortDateString();
-                    _customPresidents.Add(_president);
+                    _customPresidents.Add(new CustomPresident()
+                    {
+                        Birthday = _item.Birthday,
+                        Birthplace = _item.Birthplace,
+                        DeathDay = _item.DeathDay,
+                        DeathPlace = _item.DeathPlace,
+                        President = _item.President,
+                        Id = _item.Id,
+                        ShortBirthDate = _item.Birthday.ToString("MM/dd/yyyy"),
+                        ShortDiedDate = _item.DeathDay.ToString("MM/dd/yyyy")
+                    });
                 }
-                return Ok(_customPresidents);
+                    return Ok(_customPresidents);
             }
             catch (Exception e)
             {
@@ -134,10 +161,22 @@ namespace EndpointApp.Controllers
             CustomPresident _president = new CustomPresident();
             try
             {
-                
-                _presidentsList = _repository.context.Presidents.OrderByDescending(president => president.Birthday).ToList();
-               
-                return Ok(_presidentsList);
+                _presidentsList = _repository.context.Presidents.OrderByDescending(birth => birth.Birthday).ToList();
+                foreach (Presidents _item in _presidentsList)
+                {
+                    _customPresidents.Add(new CustomPresident()
+                    {
+                        Birthday = _item.Birthday,
+                        Birthplace = _item.Birthplace,
+                        DeathDay = _item.DeathDay,
+                        DeathPlace = _item.DeathPlace,
+                        President = _item.President,
+                        Id = _item.Id,
+                        ShortBirthDate = _item.Birthday.ToString("MM/dd/yyyy"),
+                        ShortDiedDate = _item.DeathDay.ToString("MM/dd/yyyy")
+                    });
+                }
+                    return Ok(_customPresidents);
             }
             catch (Exception e)
             {
