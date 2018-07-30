@@ -19,7 +19,7 @@ namespace EndpointApp.Controllers
         {
             _repository = presidentRepository;
         }
-        // GET api/values
+
         [HttpGet]
         public ActionResult<IEnumerable<Presidents>> Get()
         {
@@ -33,7 +33,6 @@ namespace EndpointApp.Controllers
             }
         }
 
-        // GET api/values/5
         [HttpGet("DeceasedByAscending")]
         public ActionResult<IEnumerable<Presidents>> GetByAscending()
         {
@@ -141,24 +140,24 @@ namespace EndpointApp.Controllers
 
         }
 
-        // GET api/values/5
         [HttpGet("DeceasedByDecending")]
         public ActionResult<IEnumerable<Presidents>> GetByDecending()
         {
             List<Presidents> _presidentsList = new List<Presidents>();
+            List<Presidents> _alivePresidents = new List<Presidents>();
             List<CustomPresident> _customPresidents = new List<CustomPresident>();
             CustomPresident _president = new CustomPresident();
             try
             {
-                _presidentsList = _repository.context.Presidents.OrderByDescending(deseced => deseced.DeathDay).ToList();
+                _presidentsList = _repository.context.Presidents.Where(deseced => deseced.DeathPlace == "" || deseced.Birthday.Year < 1900).OrderByDescending(death => death.DeathDay).ToList();
+                _alivePresidents = _repository.context.Presidents.Where(deseced => deseced.DeathPlace != "" && deseced.Birthday.Year > 1900).OrderBy(birth => birth.Birthday).ToList();
+                _presidentsList.AddRange(_alivePresidents);
                 foreach (Presidents _item in _presidentsList)
                 {
                     if (_item.DeathPlace != "" && _item.DeathPlace != null)
                     {
                         _customPresidents.Add(new CustomPresident()
                         {
-
-
                             Birthday = _item.Birthday,
                             Birthplace = _item.Birthplace,
                             DeathDay = _item.DeathDay,
@@ -167,7 +166,7 @@ namespace EndpointApp.Controllers
                             Id = _item.Id,
                             ShortBirthDate = _item.Birthday.ToString("MM/dd/yyyy"),
                             ShortDiedDate = _item.DeathDay.ToString("MM/dd/yyyy")
-
+                            
                         });
                     }
                     else
@@ -195,7 +194,6 @@ namespace EndpointApp.Controllers
             }
 
         }
-        // GET api/values/5
         [HttpGet("BirthDayByDecending")]
         public ActionResult<IEnumerable<Presidents>> GetBirthDayByDecending()
         {
@@ -248,7 +246,6 @@ namespace EndpointApp.Controllers
             }
 
         }
-        // GET api/values/5
         [HttpGet("PresidentsByName")]
         public ActionResult<IEnumerable<Presidents>> GetPresidentsByName(string name)
         {
