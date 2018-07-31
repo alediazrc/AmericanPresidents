@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using EndpointApp.Models;
 using EndpointApp.Repositories;
@@ -13,6 +14,7 @@ namespace EndpointApp.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        
         private PresidentsRepository _repository;
 
         public ValuesController(PresidentsRepository presidentRepository)
@@ -37,12 +39,14 @@ namespace EndpointApp.Controllers
         public ActionResult<IEnumerable<Presidents>> GetByAscending()
         {
             List<Presidents> _presidentsList = new List<Presidents>();
+            List<Presidents> _alivePresidents = new List<Presidents>();
             List<CustomPresident> _customPresidents = new List<CustomPresident>();
             CustomPresident _president = new CustomPresident();
             try
             {
-                _presidentsList = _repository.context.Presidents.OrderBy(deseced => deseced.DeathDay).ToList();
-                foreach (Presidents _item in _presidentsList)
+                _presidentsList = _repository.context.Presidents.Where(deseced => deseced.DeathPlace != "" || deseced.Birthday.Year < 1900).OrderBy(death => death.DeathDay).ToList();
+                _alivePresidents = _repository.context.Presidents.Where(deseced => deseced.DeathPlace == "" && deseced.Birthday.Year > 1900).OrderBy(birth => birth.Birthday).ToList();
+                _presidentsList.AddRange(_alivePresidents); foreach (Presidents _item in _presidentsList)
                 {
                     if (_item.DeathPlace != "" && _item.DeathPlace!=null)
                     {
@@ -149,8 +153,8 @@ namespace EndpointApp.Controllers
             CustomPresident _president = new CustomPresident();
             try
             {
-                _presidentsList = _repository.context.Presidents.Where(deseced => deseced.DeathPlace == "" || deseced.Birthday.Year < 1900).OrderByDescending(death => death.DeathDay).ToList();
-                _alivePresidents = _repository.context.Presidents.Where(deseced => deseced.DeathPlace != "" && deseced.Birthday.Year > 1900).OrderBy(birth => birth.Birthday).ToList();
+                _presidentsList = _repository.context.Presidents.Where(deseced => deseced.DeathPlace != "" || deseced.Birthday.Year < 1900).OrderByDescending(death => death.DeathDay).ToList();
+                _alivePresidents = _repository.context.Presidents.Where(deseced => deseced.DeathPlace == "" && deseced.Birthday.Year > 1900).OrderBy(birth => birth.Birthday).ToList();
                 _presidentsList.AddRange(_alivePresidents);
                 foreach (Presidents _item in _presidentsList)
                 {
