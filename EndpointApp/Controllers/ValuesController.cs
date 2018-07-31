@@ -14,7 +14,6 @@ namespace EndpointApp.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private HttpResponseMessage HttpResponseMessage;
         private PresidentsRepository _repository;
 
         public ValuesController(PresidentsRepository presidentRepository)
@@ -23,6 +22,8 @@ namespace EndpointApp.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Presidents>), 200)]
+        [ProducesResponseType(400)]
         public ActionResult<IEnumerable<Presidents>> Get()
         {
             try
@@ -36,6 +37,8 @@ namespace EndpointApp.Controllers
         }
 
         [HttpGet("DeceasedByAscending")]
+        [ProducesResponseType(typeof(IEnumerable<Presidents>), 200)]
+        [ProducesResponseType(400)]
         public ActionResult<IEnumerable<Presidents>> GetByAscending()
         {
             List<Presidents> _presidentsList = new List<Presidents>();
@@ -91,6 +94,8 @@ namespace EndpointApp.Controllers
         }
 
         [HttpGet("BirthDayByAscending")]
+        [ProducesResponseType(typeof(IEnumerable<Presidents>), 200)]
+        [ProducesResponseType(400)]
         public ActionResult<IEnumerable<Presidents>> GetBirthDayByAscending()
         {
             List<Presidents> _presidentsList = new List<Presidents>();
@@ -145,6 +150,8 @@ namespace EndpointApp.Controllers
         }
 
         [HttpGet("DeceasedByDecending")]
+        [ProducesResponseType(typeof(IEnumerable<Presidents>), 200)]
+        [ProducesResponseType(400)]
         public ActionResult<IEnumerable<Presidents>> GetByDecending()
         {
             List<Presidents> _presidentsList = new List<Presidents>();
@@ -199,6 +206,8 @@ namespace EndpointApp.Controllers
 
         }
         [HttpGet("BirthDayByDecending")]
+        [ProducesResponseType(typeof(IEnumerable<Presidents>), 200)]
+        [ProducesResponseType(400)]
         public ActionResult<IEnumerable<Presidents>> GetBirthDayByDecending()
         {
             List<Presidents> _presidentsList = new List<Presidents>();
@@ -251,6 +260,9 @@ namespace EndpointApp.Controllers
 
         }
         [HttpGet("PresidentsByName")]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(IEnumerable<Presidents>),200)]
+        [ProducesResponseType(400)]
         public ActionResult<IEnumerable<Presidents>> GetPresidentsByName(string name)
         {
             try
