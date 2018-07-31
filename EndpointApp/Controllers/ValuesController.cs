@@ -14,7 +14,7 @@ namespace EndpointApp.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        
+        private HttpResponseMessage HttpResponseMessage;
         private PresidentsRepository _repository;
 
         public ValuesController(PresidentsRepository presidentRepository)
@@ -256,6 +256,10 @@ namespace EndpointApp.Controllers
             try
             {
                 var _presidentsList = _repository.context.Presidents.Where(president => president.President.Contains(name.ToLower())).ToList();
+                if (_presidentsList.Count == 0)
+                {
+                    return NotFound();
+                }
                 return Ok(_presidentsList);
             }
             catch (Exception e)
